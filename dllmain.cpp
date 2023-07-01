@@ -12,7 +12,8 @@ DWORD WINAPI MainThread(LPVOID param) {
 }
 bool WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved) {
 	if (dwReason == DLL_PROCESS_ATTACH) {
-		MessageBoxA(NULL, "DLL injected!", "DLL injectuotas!", MB_OK);
+		//MessageBoxA(NULL, "DLL injected!", "DLL injectuotas!", MB_OK);
+		OutputDebugStringA("DLL: injected!!");
 		CreateThread(0, 0, MainThread, hModule, 0, 0);
 	}
 	if (dwReason == DLL_PROCESS_DETACH) {
