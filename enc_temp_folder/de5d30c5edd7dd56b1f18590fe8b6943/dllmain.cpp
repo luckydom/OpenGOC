@@ -145,6 +145,9 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
             return 0;
     }
     OutputDebugStringA("DLL: before native_sub_405966");
+    //writeNop(0x72CAC0, 5);
+//    writeNop(0x6941CA, 5);
+    
     HWND hWndParent = native_sub_405966(v5, nShowCmd);
     OutputDebugStringA("DLL: after native_sub_405966");
     if (!hWndParent)
