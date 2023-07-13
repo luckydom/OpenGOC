@@ -10,7 +10,6 @@
 * (data + 2) = ((addr) & 0x00ff0000) >> 16;  \
 * (data + 3) = ((addr) & 0xff000000) >> 24;
 
-//#define _AFXDLL 1;
 
 void writeMemory(uint32_t address, const void* data, size_t size)
 {
@@ -42,7 +41,6 @@ void writeNop(uint32_t address, size_t count)
     writeMemory(address, buffer.data(), buffer.size());
 }
 
-//class CMFCRibbonBar {};
 
 __declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCmdShow)
 {
@@ -52,10 +50,10 @@ __declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCm
     }
 }
 
-__declspec(naked) int __stdcall naked_sub_4059C5(uint32_t* that, int a1)
+__declspec(naked) BOOL __stdcall naked_sub_4013B6(int a1)
 {
     __asm {
-        push 004059C5h
+        push 004013B6h
         ret
     }
 }
@@ -67,7 +65,7 @@ __declspec(naked) int __stdcall naked_sub_403D05(uint32_t* that, int a1)
     }
 }
 
-__declspec(naked) CMFCRibbonBar* naked_sub_4017C6() {
+__declspec(naked) CMFCRibbonBar *naked_sub_4017C6() {
     __asm {
         push 004017C6h
         ret
@@ -172,9 +170,8 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
                     v8 = MsgWaitForMultipleObjects(1u, &pHandles, 0, 0, 0xFFu);
                     if (v8)
                         break;
-                    uint32_t* u_new3 = reinterpret_cast<uint32_t*>(0x7C0008);
                     uint8_t* u_new1 = reinterpret_cast<uint8_t*>(0x8FCC10);
-                    naked_sub_4059C5(u_new3, (int)&u_new1);
+                    naked_sub_4013B6((int)&u_new1);
                 }
                 if (v8 == 1)
                     break;
