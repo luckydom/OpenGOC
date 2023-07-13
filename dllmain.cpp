@@ -153,7 +153,10 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
     GlobalMemoryStatus(&Buffer);
 
     /////////
-    
+
+    uint32_t* local_byte_8FCC10 = reinterpret_cast<uint32_t*>(0x8FCC10);
+    uint32_t* local_dword_7C0008 = reinterpret_cast<uint32_t*>(0x7C0008);
+    CMFCRibbonBar* local_dword_7C0024 = reinterpret_cast<CMFCRibbonBar*>(0x7C0024);
     if (Buffer.dwAvailVirtual >= 0x3200000)
     {
         do
@@ -167,23 +170,19 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
                     v8 = MsgWaitForMultipleObjects(1u, &pHandles, 0, 0, 0xFFu);
                     if (v8)
                         break;
-                    uint32_t* u_new1 = reinterpret_cast<uint32_t*>(0x8FCC10);
-                    naked_sub_4013B6((int)&u_new1);
+                    naked_sub_4013B6((int)&local_byte_8FCC10);
                 }
                 if (v8 == 1)
                     break;
-                uint32_t* u_new2 = reinterpret_cast<uint32_t*>(0x7C0008);
-                if (u_new2)
+                if (local_dword_7C0008)
                 {
-                    uint32_t* u_new4 = reinterpret_cast<uint32_t*>(0x8FCC10);
-                    naked_sub_403D05(u_new2, (int)&u_new4);
+                    naked_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
                 }
                 naked_sub_4017C6();
-                //OutputDebugStringA("DLL: Went pass naked_sub_4017C6()");
             }
             v9 = PeekMessageA(&Msg, 0, 0, 0, 1u) == 0;
-            CMFCRibbonBar* u_v10 = reinterpret_cast<CMFCRibbonBar*>(0x7C0024);
-            v10 = u_v10;
+           
+            v10 = local_dword_7C0024;
         } while (v9);
         while (Msg.message != 18)
         {
@@ -193,8 +192,7 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
                 DispatchMessageA(&Msg);
             }
             v9 = PeekMessageA(&Msg, 0, 0, 0, 1u) == 0;
-            CMFCRibbonBar* u_v10 = reinterpret_cast<CMFCRibbonBar*>(0x7C0024);
-            v10 = u_v10;
+            v10 = local_dword_7C0024;
             if (v9)
                 goto LABEL_16;
         }
