@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <vector>
-//#include <afxribbonbar.h>
+#include <afxribbonbar.h>
 
 #define WRITE_ADDRESS_STRICTALIAS(data, addr) \
 * (data + 0) = ((addr) & 0x000000ff) >> 0;   \
@@ -10,6 +10,7 @@
 * (data + 2) = ((addr) & 0x00ff0000) >> 16;  \
 * (data + 3) = ((addr) & 0xff000000) >> 24;
 
+//#define _AFXDLL 1;
 
 void writeMemory(uint32_t address, const void* data, size_t size)
 {
@@ -41,7 +42,7 @@ void writeNop(uint32_t address, size_t count)
     writeMemory(address, buffer.data(), buffer.size());
 }
 
-class CMFCRibbonBar {};
+//class CMFCRibbonBar {};
 
 __declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCmdShow)
 {
@@ -222,7 +223,7 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 
 void HookFunctions() {
     writeJmp(0x00406195, myWinMain); // jmp WinMain
-    writeJmp(0x00402031, keyboardThrower); // jmp WinMain
+    //writeJmp(0x00402031, keyboardThrower); // jmp WinMain
     OutputDebugStringA("DLL: All functions hooked");
 
     //char buffer[100];
