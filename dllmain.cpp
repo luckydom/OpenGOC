@@ -43,23 +43,6 @@ void writeNop(uint32_t address, size_t count)
 
 class CMFCRibbonBar {};
 
-__declspec(naked) int __stdcall sub_76A1E4(int a1, int a2)
-{
-    __asm {
-        push 0076A1E4h
-        ret
-    }
-}
-
-
-__declspec(naked) int __stdcall native_sub_405E3E(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
-{
-    __asm {
-        push 00405E3Eh
-        ret
-    }
-}
-
 __declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCmdShow)
 {
     __asm {
@@ -68,7 +51,7 @@ __declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCm
     }
 }
 
-__declspec(naked) int __stdcall naked_sub_4059C5(int a1)
+__declspec(naked) int __stdcall naked_sub_4059C5(uint32_t* that, int a1)
 {
     __asm {
         push 004059C5h
@@ -182,20 +165,26 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
             while (1)
             {
             LABEL_16:
-                uint8_t* u_new1 = reinterpret_cast<uint8_t*>(0x8FCC10);
+                Sleep(10);
                 while (1)
                 {
                     v8 = MsgWaitForMultipleObjects(1u, &pHandles, 0, 0, 0xFFu);
                     if (v8)
                         break;
-                    naked_sub_4059C5((int)&u_new1);
+                    uint32_t* u_new3 = reinterpret_cast<uint32_t*>(0x7C0008);
+                    uint8_t* u_new1 = reinterpret_cast<uint8_t*>(0x8FCC10);
+                    naked_sub_4059C5(u_new3, (int)&u_new1);
                 }
                 if (v8 == 1)
                     break;
                 uint32_t* u_new2 = reinterpret_cast<uint32_t*>(0x7C0008);
                 if (u_new2)
-                    naked_sub_403D05(u_new2, (int)&u_new1);
+                {
+                    uint8_t* u_new4 = reinterpret_cast<uint8_t*>(0x8FCC10);
+                    naked_sub_403D05(u_new2, (int)&u_new4);
+                }
                 naked_sub_4017C6();
+                //OutputDebugStringA("DLL: Went pass naked_sub_4017C6()");
             }
             v9 = PeekMessageA(&Msg, 0, 0, 0, 1u) == 0;
             CMFCRibbonBar* u_v10 = reinterpret_cast<CMFCRibbonBar*>(0x7C0024);
@@ -250,7 +239,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     {
         case DLL_PROCESS_ATTACH:
             OutputDebugStringA("DLL: Attached");
-            MessageBox(0, L"STOP!", 0, 0);
+            //MessageBox(0, L"STOP!", 0, 0);
             HookFunctions();
             break;
 
