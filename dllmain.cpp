@@ -44,21 +44,24 @@ void writeNop(uint32_t address, size_t count)
 
 __declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCmdShow)
 {
+    //OutputDebugStringA("DLL: native_sub_405966"); // doesn't work if printing uncommented
     __asm {
         push 00405966h
         ret
     }
 }
 
-__declspec(naked) BOOL __stdcall naked_sub_4013B6(int a1)
+__declspec(naked) BOOL __fastcall naked_sub_4013B6(int a1)
 {
+    OutputDebugStringA("DLL: naked_sub_4013B6"); // Never enters function because breaks before calling it...
     __asm {
         push 004013B6h
         ret
     }
 }
-__declspec(naked) int __stdcall naked_sub_403D05(uint32_t* that, int a1)
+__declspec(naked) char __stdcall naked_sub_403D05(uint32_t* pThis, int a1)
 {
+    // OutputDebugStringA("DLL: naked_sub_403D05"); // doesn't work if printing uncommented
     __asm {
         push 00403D05h
         ret
@@ -66,6 +69,7 @@ __declspec(naked) int __stdcall naked_sub_403D05(uint32_t* that, int a1)
 }
 
 __declspec(naked) CMFCRibbonBar *naked_sub_4017C6() {
+    // OutputDebugStringA("DLL: naked_sub_4017C6"); // prints ok
     __asm {
         push 004017C6h
         ret
@@ -170,6 +174,7 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
                     v8 = MsgWaitForMultipleObjects(1u, &pHandles, 0, 0, 0xFFu);
                     if (v8)
                         break;
+                    OutputDebugStringA("DLL: ABOUT TO ENTER naked_sub_4013B6"); // never gets to this point
                     naked_sub_4013B6((int)&local_byte_8FCC10);
                 }
                 if (v8 == 1)
