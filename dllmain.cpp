@@ -44,7 +44,7 @@ void writeNop(uint32_t address, size_t count)
 
 __declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCmdShow)
 {
-    //OutputDebugStringA("DLL: native_sub_405966"); // doesn't work if printing uncommented
+    //OutputDebugStringA("DLL: native_sub_405966"); // prints but then doesn't work after
     __asm {
         push 00405966h
         ret
@@ -53,7 +53,7 @@ __declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCm
 
 __declspec(naked) BOOL __fastcall naked_sub_4013B6(int a1)
 {
-    OutputDebugStringA("DLL: naked_sub_4013B6"); // Never enters function because breaks before calling it...
+    OutputDebugStringA("DLL: naked_sub_4013B6"); // Never enters function because breaks before calling it... Can make it get called, prints ok, execution continues, but nothing happens
     __asm {
         push 004013B6h
         ret
