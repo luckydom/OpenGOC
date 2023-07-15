@@ -42,23 +42,44 @@ void writeNop(uint32_t address, size_t count)
 }
 
 
-__declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCmdShow)
+//__declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCmdShow)
+//{
+//    //OutputDebugStringA("DLL: native_sub_405966"); // prints but then doesn't work after
+//    __asm {
+//        push 00405966h
+//        ret
+//    }
+//}
+
+typedef HWND(__fastcall* Sub_69F0D0)(HINSTANCE hInstance, int nCmdShow);
+Sub_69F0D0 originalFirstRunFunc = nullptr;
+
+HWND __fastcall local_sub_405966(HINSTANCE hInstance, int nCmdShow) // 405966 is jmp
 {
-    //OutputDebugStringA("DLL: native_sub_405966"); // prints but then doesn't work after
-    __asm {
-        push 00405966h
-        ret
-    }
+    OutputDebugStringA("DLL: 1st -> local_sub_405966()");
+    originalFirstRunFunc = reinterpret_cast<Sub_69F0D0>(0x0069F0D0);
+    return originalFirstRunFunc(hInstance, nCmdShow);
 }
 
-__declspec(naked) BOOL __fastcall naked_sub_4013B6(int a1)
+//__declspec(naked) BOOL __fastcall naked_sub_4013B6(int a1)
+//{
+//    OutputDebugStringA("DLL: 1st -> naked_sub_4013B6"); // Never enters function because breaks before calling it... Can make it get called, prints ok, execution continues, but nothing happens
+//    __asm {
+//        push 004013B6h
+//        ret
+//    }
+//}
+
+typedef BOOL(__fastcall* Sub_72CAB0)(void *pThis);
+Sub_72CAB0 originalSecondRunFunc = nullptr;
+
+BOOL __fastcall local_sub_4013B6(int pThis) // 4013B6 is jmp
 {
-    OutputDebugStringA("DLL: naked_sub_4013B6"); // Never enters function because breaks before calling it... Can make it get called, prints ok, execution continues, but nothing happens
-    __asm {
-        push 004013B6h
-        ret
-    }
+    OutputDebugStringA("DLL: 2nd -> local_sub_4013B6()");
+    originalSecondRunFunc = reinterpret_cast<Sub_72CAB0>(0x0072CAB0);
+    return originalSecondRunFunc((void *)pThis);
 }
+
 __declspec(naked) char __stdcall naked_sub_403D05(uint32_t* pThis, int a1)
 {
     // OutputDebugStringA("DLL: naked_sub_403D05"); // doesn't work if printing uncommented
@@ -68,22 +89,22 @@ __declspec(naked) char __stdcall naked_sub_403D05(uint32_t* pThis, int a1)
     }
 }
 
+typedef char(__fastcall* Sub_7653F0)(uint32_t* pThis, int a1);
+Sub_7653F0 originalThirdRunFunc = nullptr;
+
+char __fastcall local_sub_403D05(uint32_t* pThis, int a1)
+{
+    OutputDebugStringA("DLL: 3rd -> local_sub_403D05()");
+    originalThirdRunFunc = reinterpret_cast<Sub_7653F0>(0x007653F0);
+    return originalThirdRunFunc(pThis, a1);
+}
+
 __declspec(naked) CMFCRibbonBar *naked_sub_4017C6() {
     // OutputDebugStringA("DLL: naked_sub_4017C6"); // prints ok
     __asm {
         push 004017C6h
         ret
     }
-}
-
-// Original function signature
-typedef int(__stdcall* Sub_402031)(HINSTANCE hinst, int a2, int a3);
-Sub_402031 originalKeyboardFunc = nullptr;
-
-int __fastcall keyboardThrower(HINSTANCE hinst, int a2, int a3)
-{
-    OutputDebugStringA("DLL: sub_402031() replaced with keyboardThrower()");
-    return 1;
 }
 
 // Original function signature
@@ -149,7 +170,8 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
             return 0;
     }
     OutputDebugStringA("DLL: before native_sub_405966");
-    HWND hWndParent = native_sub_405966(v5, nShowCmd);
+    // HWND hWndParent = native_sub_405966(v5, nShowCmd);
+    HWND hWndParent = local_sub_405966(v5, nShowCmd);
     OutputDebugStringA("DLL: after native_sub_405966");
     if (!hWndParent)
         return 0;
@@ -158,7 +180,7 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 
     /////////
 
-    uint32_t* local_byte_8FCC10 = reinterpret_cast<uint32_t*>(0x8FCC10);
+    uint8_t* local_byte_8FCC10 = reinterpret_cast<uint8_t*>(0x8FCC10);
     uint32_t* local_dword_7C0008 = reinterpret_cast<uint32_t*>(0x7C0008);
     CMFCRibbonBar* local_dword_7C0024 = reinterpret_cast<CMFCRibbonBar*>(0x7C0024);
     if (Buffer.dwAvailVirtual >= 0x3200000)
@@ -175,13 +197,15 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
                     if (v8)
                         break;
                     OutputDebugStringA("DLL: ABOUT TO ENTER naked_sub_4013B6"); // never gets to this point
-                    naked_sub_4013B6((int)&local_byte_8FCC10);
+                    //naked_sub_4013B6((int)&local_byte_8FCC10);
+                    local_sub_4013B6((int)&local_byte_8FCC10);
                 }
                 if (v8 == 1)
                     break;
                 if (local_dword_7C0008)
                 {
                     naked_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
+                    //local_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
                 }
                 naked_sub_4017C6();
             }
@@ -220,7 +244,8 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 
 void HookFunctions() {
     writeJmp(0x00406195, myWinMain); // jmp WinMain
-    //writeJmp(0x00402031, keyboardThrower); // jmp WinMain
+    //writeJmp(0x00405966, local_sub_405966);
+    //writeJmp(0x004013B6, local_sub_4013B6);
     OutputDebugStringA("DLL: All functions hooked");
 
     //char buffer[100];
