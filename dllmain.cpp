@@ -108,7 +108,7 @@ char __fastcall local_sub_403D05(uint32_t* pThis, int a1)
 //}
 
 typedef CMFCRibbonBar*(Sub_729700)();
-Sub_729700* originalFourthRunFunc = nullptr;
+Sub_729700 *originalFourthRunFunc = nullptr;
 
 CMFCRibbonBar *local_sub_4017C6()
 {
@@ -206,9 +206,9 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
                     v8 = MsgWaitForMultipleObjects(1u, &pHandles, 0, 0, 0xFFu);
                     if (v8)
                         break;
-                    OutputDebugStringA("DLL: ABOUT TO ENTER naked_sub_4013B6"); // never gets to this point
+                    // never gets to this point coz always breaks
                     //naked_sub_4013B6((int)&local_byte_8FCC10);
-                    local_sub_4013B6((int)&local_byte_8FCC10);
+                    local_sub_4013B6((int)&local_byte_8FCC10); // never gets called in normal execution during start up & draws menu items OK (checked by debugging original exe)
                 }
                 if (v8 == 1)
                     break;
