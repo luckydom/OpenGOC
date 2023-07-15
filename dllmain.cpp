@@ -70,7 +70,7 @@ HWND __fastcall local_sub_405966(HINSTANCE hInstance, int nCmdShow) // 405966 is
 //    }
 //}
 
-typedef BOOL(__fastcall* Sub_72CAB0)(void *pThis);
+typedef BOOL(__thiscall* Sub_72CAB0)(void *pThis);
 Sub_72CAB0 originalSecondRunFunc = nullptr;
 
 BOOL __fastcall local_sub_4013B6(int pThis) // 4013B6 is jmp
@@ -80,16 +80,16 @@ BOOL __fastcall local_sub_4013B6(int pThis) // 4013B6 is jmp
     return originalSecondRunFunc((void *)pThis);
 }
 
-__declspec(naked) char __stdcall naked_sub_403D05(uint32_t* pThis, int a1)
-{
-    // OutputDebugStringA("DLL: naked_sub_403D05"); // doesn't work if printing uncommented
-    __asm {
-        push 00403D05h
-        ret
-    }
-}
+//__declspec(naked) char __stdcall naked_sub_403D05(uint32_t* pThis, int a1)
+//{
+//    // OutputDebugStringA("DLL: naked_sub_403D05"); // doesn't work if printing uncommented
+//    __asm {
+//        push 00403D05h
+//        ret
+//    }
+//}
 
-typedef char(__fastcall* Sub_7653F0)(uint32_t* pThis, int a1);
+typedef char(__thiscall* Sub_7653F0)(uint32_t* pThis, int a1);
 Sub_7653F0 originalThirdRunFunc = nullptr;
 
 char __fastcall local_sub_403D05(uint32_t* pThis, int a1)
@@ -99,12 +99,22 @@ char __fastcall local_sub_403D05(uint32_t* pThis, int a1)
     return originalThirdRunFunc(pThis, a1);
 }
 
-__declspec(naked) CMFCRibbonBar *naked_sub_4017C6() {
-    // OutputDebugStringA("DLL: naked_sub_4017C6"); // prints ok
-    __asm {
-        push 004017C6h
-        ret
-    }
+//__declspec(naked) CMFCRibbonBar *naked_sub_4017C6() {
+//    // OutputDebugStringA("DLL: naked_sub_4017C6"); // prints ok
+//    __asm {
+//        push 004017C6h
+//        ret
+//    }
+//}
+
+typedef CMFCRibbonBar*(Sub_729700)();
+Sub_729700* originalFourthRunFunc = nullptr;
+
+CMFCRibbonBar *local_sub_4017C6()
+{
+    OutputDebugStringA("DLL: 4th -> local_sub_4017C6()");
+    originalFourthRunFunc = reinterpret_cast<Sub_729700*>(0x00729700);
+    return originalFourthRunFunc();
 }
 
 // Original function signature
@@ -204,10 +214,11 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
                     break;
                 if (local_dword_7C0008)
                 {
-                    naked_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
-                    //local_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
+                    //naked_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
+                    local_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
                 }
-                naked_sub_4017C6();
+                //naked_sub_4017C6();
+                local_sub_4017C6();
             }
             v9 = PeekMessageA(&Msg, 0, 0, 0, 1u) == 0;
            
