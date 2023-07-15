@@ -107,6 +107,10 @@ char __fastcall local_sub_403D05(uint32_t* pThis, int a1)
 //    }
 //}
 
+/// <summary>
+/// Menu items not being drawn. One of the paths:
+/// sub_729700 (this below) -> sub_4090AC -> sub_72AC00 -> sub_406CB2 -> sub_634B20 -> thunk_FUN_00635480 (can only be navigated in Ghidra) -> 00635523 = "New game" str
+/// </summary>
 typedef CMFCRibbonBar*(Sub_729700)();
 Sub_729700 *originalFourthRunFunc = nullptr;
 
