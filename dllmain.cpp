@@ -99,22 +99,46 @@ char __fastcall local_sub_403D05(uint32_t* pThis, int a1)
     return originalThirdRunFunc(pThis, a1);
 }
 
-//__declspec(naked) CMFCRibbonBar *naked_sub_4017C6() {
-//    // OutputDebugStringA("DLL: naked_sub_4017C6"); // prints ok
-//    __asm {
-//        push 004017C6h
-//        ret
-//    }
+__declspec(naked) CMFCRibbonBar *naked_sub_4017C6() {
+    OutputDebugStringA("DLL: (declspec) 4th -> local_sub_4017C6()");
+    __asm {
+        push 00729700h
+        ret
+    }
+}
+
+//typedef CMFCRibbonBar*(Sub_729700)();
+//Sub_729700 *originalFourthRunFunc = nullptr;
+//
+//CMFCRibbonBar *local_sub_4017C6()
+//{
+//    OutputDebugStringA("DLL: 4th -> local_sub_4017C6()");
+//    originalFourthRunFunc = reinterpret_cast<Sub_729700*>(0x00729700);
+//    return originalFourthRunFunc();
 //}
 
-typedef CMFCRibbonBar*(Sub_729700)();
-Sub_729700 *originalFourthRunFunc = nullptr;
+// GHIDRA TRY:
+__declspec(naked) void local_FUN_0072cab0() {
+    //OutputDebugStringA("DLL: (declspec) 2nd? -> local_FUN_0072cab0()");
+    __asm {
+        push 0072cab0h
+        ret
+    }
+}
 
-CMFCRibbonBar *local_sub_4017C6()
-{
-    OutputDebugStringA("DLL: 4th -> local_sub_4017C6()");
-    originalFourthRunFunc = reinterpret_cast<Sub_729700*>(0x00729700);
-    return originalFourthRunFunc();
+__declspec(naked) void __stdcall local_FUN_007653f0(void *pThis, int param_1) {
+    //OutputDebugStringA("DLL: (declspec) 3nd? -> local_FUN_007653f0()");
+    __asm {
+        push 007653f0h
+        ret
+    }
+}
+
+__declspec(naked) void __fastcall local_FUN_00729700(void* param_1, uint32_t param_2) { // uint32_t?
+    __asm {
+        push 00729700h
+        ret
+    }
 }
 
 // Original function signature
@@ -123,133 +147,135 @@ WinMainFunction originalWinMainFunc = nullptr;
 
 // Custom function that will be called instead of the original function
 int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+
 {
-    OutputDebugStringA("DLL: myWinMain() func is running");
-    DWORD v4; // eax
-    HINSTANCE v5; // ebx
-    int result; // eax
-    HWND v7; // eax
-    DWORD v8; // eax
-    bool v9; // zf
-    CMFCRibbonBar* v10; // eax
-    HWND v11; // eax
-    HANDLE pHandles; // [esp+10h] [ebp-70h]
-    struct tagMSG Msg; // [esp+14h] [ebp-6Ch]
-    WNDCLASSEXA v14; // [esp+30h] [ebp-50h]
-    struct _MEMORYSTATUS Buffer; // [esp+60h] [ebp-20h]
+    ATOM AVar1;
+    HANDLE pvVar2;
+    DWORD DVar3;
+    int uVar4;
+    int iVar5;
+    HWND pHVar6;
+    BOOL BVar7;
+    void* extraout_ECX;
+    void* pvVar8;
+    int extraout_EDX;
+    int extraout_EDX_00;
+    char* pcVar9;
+    char* pcVar10;
+    UINT UVar11;
+    tagMSG* lpMsg;
+    HANDLE pvStack_70;
+    tagMSG tStack_6c;
+    WNDCLASSEXA WStack_50;
+    _MEMORYSTATUS _Stack_20;
     char title[] = "Gangsters";
 
-    if (!CreateFileMappingA((HANDLE)0xFFFFFFFF, 0, 2u, 0, 0x20u, "GangstersMap"))
-    {
-        MessageBoxA(0, "Error creating mapping", title, 0);
-    LABEL_5:
-        ExitProcess(1u);
-    }
-    if (GetLastError() == 183)
-    {
-        MessageBoxA(0, "Gangsters is already running", title, 0x10u);
-        goto LABEL_5;
-    }
-    while (ShowCursor(0) > -1)
-        ;
-    HANDLE hObject = CreateEventA(0, 0, 0, "GangEv1");
-    pHandles = hObject;
-    v4 = GetCurrentProcessId();
-    HANDLE hProcess = OpenProcess(0x200u, 0, v4);
-    SetPriorityClass(hProcess, 0x20u);
-    if (hPrevInstance)
-    {
-        v5 = hInstance;
-    }
-    else
-    {
-        v14.cbClsExtra = 0;
-        v14.cbWndExtra = 0;
-        v5 = hInstance;
-        v14.hInstance = hInstance;
-        v14.cbSize = 48;
-        v14.style = 4099;
-        v14.lpfnWndProc = (WNDPROC)0x405E3E;
-        v14.hIcon = LoadIconA(hInstance, (LPCSTR)0x7C);
-        v14.hCursor = LoadCursorA(0, (LPCSTR)0x7F00);
-        v14.hbrBackground = 0;
-        v14.lpszClassName = title;
-        v14.lpszMenuName = 0;
-        v14.hIconSm = LoadIconA(hInstance, (LPCSTR)0x7C);
-        if (!RegisterClassExA(&v14))
-            return 0;
-    }
-    OutputDebugStringA("DLL: before native_sub_405966");
-    // HWND hWndParent = native_sub_405966(v5, nShowCmd);
-    HWND hWndParent = local_sub_405966(v5, nShowCmd);
-    OutputDebugStringA("DLL: after native_sub_405966");
-    if (!hWndParent)
-        return 0;
-    Buffer.dwLength = 32;
-    GlobalMemoryStatus(&Buffer);
-
-    /////////
-
-    uint8_t* local_byte_8FCC10 = reinterpret_cast<uint8_t*>(0x8FCC10);
     uint32_t* local_dword_7C0008 = reinterpret_cast<uint32_t*>(0x7C0008);
-    CMFCRibbonBar* local_dword_7C0024 = reinterpret_cast<CMFCRibbonBar*>(0x7C0024);
-    if (Buffer.dwAvailVirtual >= 0x3200000)
-    {
-        do
-        {
-            while (1)
-            {
-            LABEL_16:
+    uint8_t* local_byte_8FCC10 = reinterpret_cast<uint8_t*>(0x8FCC10);
+
+    pvVar2 = CreateFileMappingA((HANDLE)0xffffffff, (LPSECURITY_ATTRIBUTES)0x0, 2, 0, 0x20, "GangstersMap");
+    if (pvVar2 == (HANDLE)0x0) {
+        UVar11 = 0;
+        pcVar10 = title;
+        pcVar9 = (char*)"Error creating mapping";
+    }
+    else {
+        DVar3 = GetLastError();
+        if (DVar3 != 0xb7) {
+            do {
                 Sleep(10);
-                while (1)
-                {
-                    v8 = MsgWaitForMultipleObjects(1u, &pHandles, 0, 0, 0xFFu);
-                    if (v8)
-                        break;
-                    // never gets to this point coz always breaks
-                    //naked_sub_4013B6((int)&local_byte_8FCC10);
-                    local_sub_4013B6((int)&local_byte_8FCC10); // never gets called in normal execution during start up & draws menu items OK (checked by debugging original exe)
+                uVar4 = ShowCursor(0);
+            } while (uVar4 < 0x80000000);
+            HANDLE hObject = CreateEventA((LPSECURITY_ATTRIBUTES)0x0, 0, 0, "GangEv1");
+            pvStack_70 = hObject;
+            DVar3 = GetCurrentProcessId();
+            HANDLE hProcess = OpenProcess(0x200, 0, DVar3);
+            SetPriorityClass(hProcess, 0x20);
+            if (hPrevInstance == 0) {
+                WStack_50.cbClsExtra = 0;
+                WStack_50.cbWndExtra = 0;
+                WStack_50.hInstance = hInstance;
+                WStack_50.cbSize = 0x30;
+                WStack_50.style = 0x1003;
+                WNDPROC wProc = reinterpret_cast<WNDPROC>(0x00405e3e);
+                WStack_50.lpfnWndProc = wProc; // TODO: Maybe (WNDPROC)&0x00405e3e (reference?)
+                WStack_50.hIcon = LoadIconA(hInstance, (LPCSTR)0x7c);
+                WStack_50.hCursor = LoadCursorA((HINSTANCE)0x0, (LPCSTR)0x7f00);
+                WStack_50.hbrBackground = (HBRUSH)0x0;
+                WStack_50.lpszClassName = title;
+                WStack_50.lpszMenuName = (LPCSTR)0x0;
+                WStack_50.hIconSm = LoadIconA(hInstance, (LPCSTR)0x7c);
+                AVar1 = RegisterClassExA(&WStack_50);
+                if (AVar1 == 0) {
+                    return 0;
                 }
-                if (v8 == 1)
-                    break;
-                if (local_dword_7C0008)
-                {
-                    //naked_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
-                    local_sub_403D05(local_dword_7C0008, (int)&local_byte_8FCC10);
-                }
-                //naked_sub_4017C6();
-                local_sub_4017C6();
             }
-            v9 = PeekMessageA(&Msg, 0, 0, 0, 1u) == 0;
-           
-            v10 = local_dword_7C0024;
-        } while (v9);
-        while (Msg.message != 18)
-        {
-            if (v10 || (v11 = GetActiveWindow(), !IsDialogMessageA(v11, &Msg)) || Msg.message == 261 || Msg.message == 260)
-            {
-                TranslateMessage(&Msg);
-                DispatchMessageA(&Msg);
+            HWND hWndParent = local_sub_405966(hInstance, nShowCmd);
+            if (hWndParent == (HWND)0x0) {
+                return 0;
             }
-            v9 = PeekMessageA(&Msg, 0, 0, 0, 1u) == 0;
-            v10 = local_dword_7C0024;
-            if (v9)
-                goto LABEL_16;
+            _Stack_20.dwLength = 0x20;
+            GlobalMemoryStatus(&_Stack_20);
+            if (_Stack_20.dwAvailVirtual < 0x3200000) {
+                do {
+                    iVar5 = ShowCursor(1);
+                    Sleep(10);
+                } while (iVar5 < 0);
+                UVar11 = 0x10;
+                pcVar10 = (char*)"Error";
+                pcVar9 = (char*)"Please check disk space, you need at least 50MB free.";
+                pHVar6 = GetActiveWindow();
+                MessageBoxA(pHVar6, pcVar9, pcVar10, UVar11);
+                return 0;
+            }
+            do {
+                do {
+                    while (true) {
+                        Sleep(10);
+                        while (DVar3 = MsgWaitForMultipleObjects(1, &pvStack_70, 0, 0, 0xff), DVar3 == 0) {
+                            local_FUN_0072cab0();
+                        }
+                        if (DVar3 == 1) break;
+                        pvVar8 = local_dword_7C0008;
+                        uVar4 = 0x0; //extraout_EDX;
+                        if (local_dword_7C0008 != (void*)0x0) {
+                            local_FUN_007653f0(local_dword_7C0008, (int)&local_byte_8FCC10);
+                            pvVar8 = (void*)0x0;//extraout_ECX;
+                            uVar4 = 0x0;//extraout_EDX_00;
+                        }
+                        local_FUN_00729700(pvVar8, uVar4);
+                    }
+                    BVar7 = PeekMessageA(&tStack_6c, (HWND)0x0, 0, 0, 1);
+                } while (BVar7 == 0);
+                do {
+                    if (tStack_6c.message == 0x12) {
+                        CloseHandle(hObject);
+                        return tStack_6c.wParam;
+                    }
+                    lpMsg = &tStack_6c;
+                    DWORD* local_dword_7C0024 = reinterpret_cast<DWORD*>(0x7C0024); // TODO: ??? maybe dword and not cmfcribbon
+                    if (local_dword_7C0024 == 0) {
+                        pHVar6 = GetActiveWindow();
+                        BVar7 = IsDialogMessageA(pHVar6, lpMsg);
+                        if (((BVar7 == 0) || (tStack_6c.message == 0x105)) || (tStack_6c.message == 0x104))
+                            goto LAB_0069f008;
+                    }
+                    else {
+                    LAB_0069f008:
+                        TranslateMessage(&tStack_6c);
+                        DispatchMessageA(&tStack_6c);
+                    }
+                    BVar7 = PeekMessageA(&tStack_6c, (HWND)0x0, 0, 0, 1);
+                } while (BVar7 != 0);
+            } while (true);
         }
-        CloseHandle(hObject);
-        result = Msg.wParam;
+        UVar11 = 0x10;
+        pcVar10 = (char*)title;
+        pcVar9 = (char*)"Gangsters already running.";
     }
-    else
-    {
-        while (ShowCursor(1) < 0)
-            ;
-        v7 = GetActiveWindow();
-        MessageBoxA(v7, "Please check disk space, you need at least 50MB free.", "Error", 0x10u);
-        result = 0;
-    }
-    return result;
-    //originalWinMainFunc = reinterpret_cast<WinMainFunction>(0x0069EDC0);
-    //return originalWinMainFunc(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
+    MessageBoxA((HWND)0x0, pcVar9, pcVar10, UVar11);
+    /* WARNING: Subroutine does not return */
+    ExitProcess(1);
 }
 
 
