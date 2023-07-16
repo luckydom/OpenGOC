@@ -280,7 +280,7 @@ Sub_40290F originalUnknownFunc1 = nullptr;
 
 void __fastcall local_sub_40290F(PCRITICAL_SECTION lpCriticalSection)
 {
-    OutputDebugStringA("DLL: local_FUN_006352f0(): BackgroundDrawer");
+    OutputDebugStringA("DLL: local_sub_40290F()");
     originalUnknownFunc1 = reinterpret_cast<Sub_40290F>(0x005CFF80);
     return originalUnknownFunc1(lpCriticalSection);
 }
