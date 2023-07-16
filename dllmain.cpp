@@ -349,11 +349,26 @@ void __fastcall drawMenuItems2(int pThis, HWND param_1, char param_2)
     return;
 }
 
+// Helper method
+template<typename ReturnType, typename ThisType, typename... Arguments>
+__forceinline ReturnType Call_Method(const uintptr_t address, ThisType* const self, Arguments... args)
+{
+    return reinterpret_cast<ReturnType(__thiscall*)(ThisType*, Arguments...)>(address)(self, args...);
+}
+
 class Unk7C0010 {
     uint8_t pad[0x1BDC];
 public:
     void drawMenuItems3(HWND param_1, char param_2) {
-        OutputDebugStringA("DLL: MAYBE THE REAL drawMenuItems()");
+        OutputDebugStringA("DLL: drawMenuItems3() START");
+        this->drawBackground(param_1, (char*)"Graphics\\Menu\\Main Menu.bmp", 1);
+        OutputDebugStringA("DLL: drawMenuItems3() END");
+    }
+
+    void drawBackground(HWND param_2, char* param_3, int param_4) {
+        OutputDebugStringA("DLL: drawBackground() START");
+        Call_Method<void, Unk7C0010, HWND, char*, int>(0x006352F0, this, param_2, param_3, param_4);
+        OutputDebugStringA("DLL: drawBackground() END");
     }
 };
 
