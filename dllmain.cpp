@@ -349,9 +349,23 @@ void __fastcall drawMenuItems2(int pThis, HWND param_1, char param_2)
     return;
 }
 
+class Unk7C0010 {
+    uint8_t pad[0x1BDC];
+public:
+    void drawMenuItems3(HWND param_1, char param_2) {
+        OutputDebugStringA("DLL: MAYBE THE REAL drawMenuItems()");
+    }
+};
+
+template<typename T> void Hook_Method(uintptr_t in, T out)
+{
+    writeJmp(in, ((void*&)out));
+}
+
 void HookFunctions() {
     writeJmp(0x00406195, myWinMain);
-    writeJmp(0x00406CB2, drawMenuItems2);
+    //writeJmp(0x00406CB2, drawMenuItems2);
+    Hook_Method(0x00406CB2, &Unk7C0010::drawMenuItems3);
     OutputDebugStringA("DLL: All functions hooked");
 
     //char buffer[100];
