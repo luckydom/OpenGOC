@@ -42,6 +42,10 @@ void writeNop(uint32_t address, size_t count)
 }
 
 
+//
+// WIN MAIN IMPL STARTS HERE
+//
+
 //__declspec(naked) HWND __fastcall native_sub_405966(HINSTANCE hInstance, int nCmdShow)
 //{
 //    //OutputDebugStringA("DLL: native_sub_405966"); // prints but then doesn't work after
@@ -259,94 +263,50 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 
 ///
 ///
-/// DRAW MENU ITEMS 
+/// DRAW BACKGROUND & MENU ITEMS IMPL STARTS
 /// 
 /// 
 
 
-
-typedef void(__thiscall* FUN_006352f0)(int param_1_00, HWND param_2, char* param_3, int param_4);
-FUN_006352f0 originalBackgroundDrawer = nullptr;
-
-void __fastcall local_FUN_006352f0(int param_1_00, HWND param_2, char* param_3, int param_4)
-{
-    OutputDebugStringA("DLL: local_FUN_006352f0(): BackgroundDrawer");
-    originalBackgroundDrawer = reinterpret_cast<FUN_006352f0>(0x006352f0);
-    return originalBackgroundDrawer(param_1_00, param_2, param_3, param_4);
-}
-
-typedef void(__thiscall* Sub_40290F)(PCRITICAL_SECTION lpCriticalSection);
+typedef void(__fastcall* Sub_40290F)(LPCRITICAL_SECTION lpCriticalSection);
 Sub_40290F originalUnknownFunc1 = nullptr;
 
-void __fastcall local_sub_40290F(PCRITICAL_SECTION lpCriticalSection)
+void __fastcall local_sub_40290F(LPCRITICAL_SECTION lpCriticalSection)
 {
     OutputDebugStringA("DLL: local_sub_40290F()");
-    originalUnknownFunc1 = reinterpret_cast<Sub_40290F>(0x005CFF80);
-    return originalUnknownFunc1(lpCriticalSection);
+    originalUnknownFunc1 = reinterpret_cast<Sub_40290F>(0x0040290F);
+    originalUnknownFunc1(lpCriticalSection);
+    return;
 }
 
+typedef int(__fastcall* Sub_401AAF)(int param1);
+Sub_401AAF originalUnknownFunc2 = nullptr;
 
-
-//
-// Original function signature
-typedef void(__thiscall* DrawMenuItemsFunc)(int pThis, HWND param_1, char param_2);
-DrawMenuItemsFunc originalDrawMenuItemsFunc = nullptr;
-
-void __fastcall drawMenuItems2(int pThis, HWND param_1, char param_2)
+int __fastcall local_sub_401AAF(int param1)
 {
-    OutputDebugStringA("DLL: MAYBE THE REAL drawMenuItems()");
-    //int v3; // eax
-    //DWORD* v4; // ecx
-    //void* v5; // eax
-    //void* v6; // edi
-    //int v7; // eax
-    //int v8; // esi
-    //void* v9; // eax
-    //void* v10; // ebx
-    //int v11; // eax
-    //void* v12; // eax
-    //void* v13; // esi
-    //int v14; // eax
-    //int v15; // edi
-    //signed int v16; // ebx
-    //int v17; // esi
-    //char v18; // al
-    //int result; // eax
-    //int v49; // [esp+Ch] [ebp-94h]
-    //int v50; // [esp+10h] [ebp-90h]
-    //int v52; // [esp+54h] [ebp-4Ch]
-    //int v53; // [esp+58h] [ebp-48h]
-    //int v54; // [esp+60h] [ebp-40h]
-    //void* v55; // [esp+74h] [ebp-2Ch]
-    //char v56; // [esp+78h] [ebp-28h]
-    //void* v57; // [esp+8Ch] [ebp-14h]
-    //DWORD* v58; // [esp+90h] [ebp-10h]
-    //int v59; // [esp+9Ch] [ebp-4h]
+    OutputDebugStringA("DLL: local_sub_401AAF()");
+    originalUnknownFunc2 = reinterpret_cast<Sub_401AAF>(0x0040290F);
+    return originalUnknownFunc2(param1);
+}
 
-    //v58 = (DWORD*)pThis;
-    //LPCRITICAL_SECTION lpCriticalSection = (LPCRITICAL_SECTION)0x007c0004;
-    //local_sub_40290F(lpCriticalSection);
-    //v3 = sub_401AAF(lpCriticalSection);
-    //v4 = v58;
-    //v58[2282] = 0;
-    //*((uint16_t*)v4 + 4566) = 0; // ?? 16 ?
-    //v49 = 108;
-    //v50 = 4096;
-    //v52 = 32;
-    //v53 = 80;
-    //v54 = 8;
-    //(*(void(__stdcall**)(int, DWORD, int*))(*(DWORD*)v3 + 32))(v3, 0, &v49);
-    //sub_404813(lpCriticalSection);
-    //sub_402757(lpCriticalSection);
+typedef int(__fastcall* Sub_404813)(LPCRITICAL_SECTION lpCriticalSection);
+Sub_404813 originalUnknownFunc3 = nullptr;
 
-    // HINSTANCE* local_14 = ?????????
-    local_FUN_006352f0(pThis, param_1, (char*)"Graphics\\Menu\\Main Menu.bmp", 1);
+int __fastcall local_sub_404813(LPCRITICAL_SECTION lpCriticalSection)
+{
+    OutputDebugStringA("DLL: local_sub_404813()");
+    originalUnknownFunc3 = reinterpret_cast<Sub_404813>(0x005D08F0);
+    return originalUnknownFunc3(lpCriticalSection);
+}
 
-    //originalDrawMenuItemsFunc = reinterpret_cast<DrawMenuItemsFunc>(0x00634B20);
-    //originalDrawMenuItemsFunc(pThis, param_1, param_2);
-    OutputDebugStringA("DLL: drawMenuItems() DONE");
+typedef void(__fastcall* Sub_402757)(LPCRITICAL_SECTION lpCriticalSection);
+Sub_402757 originalUnknownFunc4 = nullptr;
 
-    return;
+void __fastcall local_sub_402757(LPCRITICAL_SECTION lpCriticalSection)
+{
+    OutputDebugStringA("DLL: local_sub_402757()");
+    originalUnknownFunc4 = reinterpret_cast<Sub_402757>(0x005D0A80);
+    originalUnknownFunc4(lpCriticalSection);
 }
 
 // Helper method
@@ -359,9 +319,55 @@ __forceinline ReturnType Call_Method(const uintptr_t address, ThisType* const se
 class Unk7C0010 {
     uint8_t pad[0x1BDC];
 public:
-    void drawMenuItems3(HWND param_1, char param_2) {
+    void drawMenuItems3(HWND param_1, char param_2) { // sub_634B20
         OutputDebugStringA("DLL: drawMenuItems3() START");
-        this->drawBackground(param_1, (char*)"Graphics\\Menu\\Main Menu.bmp", 1);
+        Call_Method<void, Unk7C0010, HWND, char>(0x00634B20, this, param_1, param_2);
+
+        //int v3; // eax
+        //Unk7C0010* v4; // ecx
+        //void* v5; // eax
+        //void* v6; // edi
+        //int v7; // eax
+        //int v8; // esi
+        //void* v9; // eax
+        //void* v10; // ebx
+        //int v11; // eax
+        //void* v12; // eax
+        //void* v13; // esi
+        //int v14; // eax
+        //int v15; // edi
+        //signed int v16; // ebx
+        //int v17; // esi
+        //char v18; // al
+        //int result; // eax
+        //int v49; // [esp+Ch] [ebp-94h]
+        //int v50; // [esp+10h] [ebp-90h]
+        //int v52; // [esp+54h] [ebp-4Ch]
+        //int v53; // [esp+58h] [ebp-48h]
+        //int v54; // [esp+60h] [ebp-40h]
+        //void* v55; // [esp+74h] [ebp-2Ch]
+        //char v56; // [esp+78h] [ebp-28h]
+        //void* v57; // [esp+8Ch] [ebp-14h]
+        //Unk7C0010* v58; // [esp+90h] [ebp-10h]
+        //int v59; // [esp+9Ch] [ebp-4h]
+
+        //v58 = this;
+        //LPCRITICAL_SECTION lpCriticalSection = reinterpret_cast<LPCRITICAL_SECTION>(0x007c0004);
+        //local_sub_40290F(lpCriticalSection); // CRASHES HERE
+        //v3 = local_sub_401AAF((int)lpCriticalSection);
+        //v4 = v58;
+        //// v58[2282] = 0; // ERROR!
+        //*((uint16_t*)v4 + 4566) = 0; // ?? 16 ?
+        //v49 = 108;
+        //v50 = 4096;
+        //v52 = 32;
+        //v53 = 80;
+        //v54 = 8;
+        //(*(void(__stdcall**)(int, DWORD, int*))(*(DWORD*)v3 + 32))(v3, 0, &v49);
+        //local_sub_404813(lpCriticalSection);
+        //local_sub_402757(lpCriticalSection);
+
+        //this->drawBackground(param_1, (char*)"Graphics\\Menu\\Main Menu.bmp", 1);
         OutputDebugStringA("DLL: drawMenuItems3() END");
     }
 
@@ -379,7 +385,6 @@ template<typename T> void Hook_Method(uintptr_t in, T out)
 
 void HookFunctions() {
     writeJmp(0x00406195, myWinMain);
-    //writeJmp(0x00406CB2, drawMenuItems2);
     Hook_Method(0x00406CB2, &Unk7C0010::drawMenuItems3);
     OutputDebugStringA("DLL: All functions hooked");
 
