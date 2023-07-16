@@ -352,8 +352,8 @@ public:
         int v59; // [esp+9Ch] [ebp-4h]
         v58 = this;
         LPCRITICAL_SECTION* lpCriticalSection = reinterpret_cast<LPCRITICAL_SECTION*>(0x007c0004);
-        thunk_FUN_005cff80(*lpCriticalSection); // CRASHES HERE
-        v3 = thunk_FUN_005d08e0((int)lpCriticalSection);
+        thunk_FUN_005cff80(*lpCriticalSection);
+        v3 = thunk_FUN_005d08e0((int)lpCriticalSection);  // CRASHES HERE
         v4 = v58;
         // v58[2282] = 0; // ERROR!
         *((uint16_t*)v4 + 4566) = 0; // ?? 16 ?
