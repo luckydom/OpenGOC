@@ -271,10 +271,10 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 typedef void(__fastcall* Sub_40290F)(LPCRITICAL_SECTION lpCriticalSection);
 Sub_40290F originalUnknownFunc1 = nullptr;
 
-void __fastcall local_sub_40290F(LPCRITICAL_SECTION lpCriticalSection)
+void __fastcall thunk_FUN_005cff80(LPCRITICAL_SECTION lpCriticalSection)
 {
-    OutputDebugStringA("DLL: local_sub_40290F()");
-    originalUnknownFunc1 = reinterpret_cast<Sub_40290F>(0x0040290F);
+    OutputDebugStringA("DLL: thunk_FUN_005cff80()");
+    originalUnknownFunc1 = reinterpret_cast<Sub_40290F>(0x005cff80);
     originalUnknownFunc1(lpCriticalSection);
     return;
 }
@@ -282,10 +282,10 @@ void __fastcall local_sub_40290F(LPCRITICAL_SECTION lpCriticalSection)
 typedef int(__fastcall* Sub_401AAF)(int param1);
 Sub_401AAF originalUnknownFunc2 = nullptr;
 
-int __fastcall local_sub_401AAF(int param1)
+int __fastcall thunk_FUN_005d08e0(int param1)
 {
-    OutputDebugStringA("DLL: local_sub_401AAF()");
-    originalUnknownFunc2 = reinterpret_cast<Sub_401AAF>(0x0040290F);
+    OutputDebugStringA("DLL: thunk_FUN_005d08e0()");
+    originalUnknownFunc2 = reinterpret_cast<Sub_401AAF>(0x005d08e0);
     return originalUnknownFunc2(param1);
 }
 
@@ -321,51 +321,50 @@ class Unk7C0010 {
 public:
     void drawMenuItems3(HWND param_1, char param_2) { // sub_634B20
         OutputDebugStringA("DLL: drawMenuItems3() START");
-        Call_Method<void, Unk7C0010, HWND, char>(0x00634B20, this, param_1, param_2);
+        //Call_Method<void, Unk7C0010, HWND, char>(0x00634B20, this, param_1, param_2);
 
-        //int v3; // eax
-        //Unk7C0010* v4; // ecx
-        //void* v5; // eax
-        //void* v6; // edi
-        //int v7; // eax
-        //int v8; // esi
-        //void* v9; // eax
-        //void* v10; // ebx
-        //int v11; // eax
-        //void* v12; // eax
-        //void* v13; // esi
-        //int v14; // eax
-        //int v15; // edi
-        //signed int v16; // ebx
-        //int v17; // esi
-        //char v18; // al
-        //int result; // eax
-        //int v49; // [esp+Ch] [ebp-94h]
-        //int v50; // [esp+10h] [ebp-90h]
-        //int v52; // [esp+54h] [ebp-4Ch]
-        //int v53; // [esp+58h] [ebp-48h]
-        //int v54; // [esp+60h] [ebp-40h]
-        //void* v55; // [esp+74h] [ebp-2Ch]
-        //char v56; // [esp+78h] [ebp-28h]
-        //void* v57; // [esp+8Ch] [ebp-14h]
-        //Unk7C0010* v58; // [esp+90h] [ebp-10h]
-        //int v59; // [esp+9Ch] [ebp-4h]
-
-        //v58 = this;
-        //LPCRITICAL_SECTION lpCriticalSection = reinterpret_cast<LPCRITICAL_SECTION>(0x007c0004);
-        //local_sub_40290F(lpCriticalSection); // CRASHES HERE
-        //v3 = local_sub_401AAF((int)lpCriticalSection);
-        //v4 = v58;
-        //// v58[2282] = 0; // ERROR!
-        //*((uint16_t*)v4 + 4566) = 0; // ?? 16 ?
-        //v49 = 108;
-        //v50 = 4096;
-        //v52 = 32;
-        //v53 = 80;
-        //v54 = 8;
-        //(*(void(__stdcall**)(int, DWORD, int*))(*(DWORD*)v3 + 32))(v3, 0, &v49);
-        //local_sub_404813(lpCriticalSection);
-        //local_sub_402757(lpCriticalSection);
+        int v3; // eax
+        Unk7C0010* v4; // ecx
+        void* v5; // eax
+        void* v6; // edi
+        int v7; // eax
+        int v8; // esi
+        void* v9; // eax
+        void* v10; // ebx
+        int v11; // eax
+        void* v12; // eax
+        void* v13; // esi
+        int v14; // eax
+        int v15; // edi
+        signed int v16; // ebx
+        int v17; // esi
+        char v18; // al
+        int result; // eax
+        int v49; // [esp+Ch] [ebp-94h]
+        int v50; // [esp+10h] [ebp-90h]
+        int v52; // [esp+54h] [ebp-4Ch]
+        int v53; // [esp+58h] [ebp-48h]
+        int v54; // [esp+60h] [ebp-40h]
+        void* v55; // [esp+74h] [ebp-2Ch]
+        char v56; // [esp+78h] [ebp-28h]
+        void* v57; // [esp+8Ch] [ebp-14h]
+        Unk7C0010* v58; // [esp+90h] [ebp-10h]
+        int v59; // [esp+9Ch] [ebp-4h]
+        v58 = this;
+        LPCRITICAL_SECTION* lpCriticalSection = reinterpret_cast<LPCRITICAL_SECTION*>(0x007c0004);
+        thunk_FUN_005cff80(*lpCriticalSection); // CRASHES HERE
+        v3 = thunk_FUN_005d08e0((int)lpCriticalSection);
+        v4 = v58;
+        // v58[2282] = 0; // ERROR!
+        *((uint16_t*)v4 + 4566) = 0; // ?? 16 ?
+        v49 = 108;
+        v50 = 4096;
+        v52 = 32;
+        v53 = 80;
+        v54 = 8;
+        (*(void(__stdcall**)(int, DWORD, int*))(*(DWORD*)v3 + 32))(v3, 0, &v49);
+        local_sub_404813(*lpCriticalSection);
+        local_sub_402757(*lpCriticalSection);
 
         //this->drawBackground(param_1, (char*)"Graphics\\Menu\\Main Menu.bmp", 1);
         OutputDebugStringA("DLL: drawMenuItems3() END");
