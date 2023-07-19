@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <afxribbonbar.h>
+#include <ddraw.h>
 
 #define WRITE_ADDRESS_STRICTALIAS(data, addr) \
 * (data + 0) = ((addr) & 0x000000ff) >> 0;   \
@@ -316,8 +317,22 @@ __forceinline ReturnType Call_Method(const uintptr_t address, ThisType* const se
     return reinterpret_cast<ReturnType(__thiscall*)(ThisType*, Arguments...)>(address)(self, args...);
 }
 
+class Unk7C0004 {
+private:
+    CRITICAL_SECTION section;
+    uint8_t pad[0x4];
+    LPDIRECTDRAW  var_1C;
+    uint8_t pad[0x440 - 0x20];
+public:
+    void sub5CFF80();
+    LPDIRECTDRAW getUnk1C() { return var_1C; } // 0x005D08E0
+};
+
 class Unk7C0010 {
-    uint8_t pad[0x1BDC];
+    uint8_t pad[0x11D4 - 0x0];
+    uint16_t var_11D4; // 0x11D4
+    uint8_t var_11D6;  // 0x11D6
+    uint8_t pad[0x1BDC - 0x11D6];
 public:
     void drawMenuItems3(HWND param_1, char param_2) { // sub_634B20
         OutputDebugStringA("DLL: drawMenuItems3() START");
@@ -355,14 +370,17 @@ public:
         thunk_FUN_005cff80(*lpCriticalSection);
         v3 = thunk_FUN_005d08e0((int)lpCriticalSection);  // CRASHES HERE
         v4 = v58;
-        // v58[2282] = 0; // ERROR!
+        v58->var_11D4 = 0; // v58[2282] = 0; // ERROR!
         *((uint16_t*)v4 + 4566) = 0; // ?? 16 ?
         v49 = 108;
         v50 = 4096;
         v52 = 32;
         v53 = 80;
         v54 = 8;
+        
+        // EnumDisplayMode(0 /*Flags*/, lpDDSurfaceDesc /* localVar */, lpContext /* this */, lpEnumModesCallback /* 0x00401492 */)
         (*(void(__stdcall**)(int, DWORD, int*))(*(DWORD*)v3 + 32))(v3, 0, &v49);
+
         local_sub_404813(*lpCriticalSection);
         local_sub_402757(*lpCriticalSection);
 
@@ -412,3 +430,4 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 
     return TRUE;
 }
+
