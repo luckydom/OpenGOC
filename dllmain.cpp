@@ -324,7 +324,8 @@ private:
     LPDIRECTDRAW  var_1C;
     uint8_t pad[0x440 - 0x20];
 public:
-    void sub5CFF80();
+    void sub_5CFF80();
+    int sub_5D08E0();
     LPDIRECTDRAW getUnk1C() { return var_1C; } // 0x005D08E0
 };
 
@@ -338,7 +339,9 @@ public:
         OutputDebugStringA("DLL: drawMenuItems3() START");
         //Call_Method<void, Unk7C0010, HWND, char>(0x00634B20, this, param_1, param_2);
 
-        int v3; // eax
+        //int v3; // eax
+        LPDIRECTDRAW v3;
+
         Unk7C0010* v4; // ecx
         void* v5; // eax
         void* v6; // edi
@@ -355,7 +358,8 @@ public:
         int v17; // esi
         char v18; // al
         int result; // eax
-        int v49; // [esp+Ch] [ebp-94h]
+        //int v49; // [esp+Ch] [ebp-94h]
+        DDSURFACEDESC v49{};
         int v50; // [esp+10h] [ebp-90h]
         int v52; // [esp+54h] [ebp-4Ch]
         int v53; // [esp+58h] [ebp-48h]
@@ -366,23 +370,27 @@ public:
         Unk7C0010* v58; // [esp+90h] [ebp-10h]
         int v59; // [esp+9Ch] [ebp-4h]
         v58 = this;
-        LPCRITICAL_SECTION* lpCriticalSection = reinterpret_cast<LPCRITICAL_SECTION*>(0x007c0004);
-        thunk_FUN_005cff80(*lpCriticalSection);
-        v3 = thunk_FUN_005d08e0((int)lpCriticalSection);  // CRASHES HERE
-        v4 = v58;
-        v58->var_11D4 = 0; // v58[2282] = 0; // ERROR!
-        *((uint16_t*)v4 + 4566) = 0; // ?? 16 ?
-        v49 = 108;
-        v50 = 4096;
-        v52 = 32;
-        v53 = 80;
-        v54 = 8;
-        
-        // EnumDisplayMode(0 /*Flags*/, lpDDSurfaceDesc /* localVar */, lpContext /* this */, lpEnumModesCallback /* 0x00401492 */)
+      
+        v4 = v58 = this;
+        Unk7C0004* lpCriticalSection = reinterpret_cast<Unk7C0004*>(0x007c0004);
+        lpCriticalSection->sub_5CFF80();
+        v3 = lpCriticalSection->getUnk1C();  // CRASHES HERE
+        this->var_11D4 = 0; // v58[2282] = 0; // ERROR!
+        this->var_11D6 = 0; // ?? 16 ?
+
+        //v49.size = 108;
+        //v49.flags = DDSD_PIXELFORMAT; // look this up
+        //v49.ddckCKSrcOverlay = 32;
+        //v49.ddckCKSrcBlt = 80;
+        //v49.ddsCaps = DDSCAPS_COMPLEX;
+        DDSURFACEDESC v49{ 108,4096, 32, 80, 8 };
+
+        // IDirectDraw_EnumDisplayModes(v3,0 /*Flags*/, lpDDSurfaceDesc /* localVar */, lpContext /* this */, lpEnumModesCallback /* 0x00401492 */)
+        // IDirectDraw_EnumDisplayModes(v3, 0, &v49 /* lpDDSurfaceDesc */, this, 0x00401492);
         (*(void(__stdcall**)(int, DWORD, int*))(*(DWORD*)v3 + 32))(v3, 0, &v49);
 
-        local_sub_404813(*lpCriticalSection);
-        local_sub_402757(*lpCriticalSection);
+        local_sub_404813(lpCriticalSection);
+        local_sub_402757(lpCriticalSection);
 
         //this->drawBackground(param_1, (char*)"Graphics\\Menu\\Main Menu.bmp", 1);
         OutputDebugStringA("DLL: drawMenuItems3() END");
@@ -402,7 +410,7 @@ template<typename T> void Hook_Method(uintptr_t in, T out)
 
 void HookFunctions() {
     writeJmp(0x00406195, myWinMain);
-    Hook_Method(0x00406CB2, &Unk7C0010::drawMenuItems3);
+    //Hook_Method(0x00406CB2, &Unk7C0010::drawMenuItems3);
     OutputDebugStringA("DLL: All functions hooked");
 
     //char buffer[100];
