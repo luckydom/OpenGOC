@@ -269,46 +269,46 @@ int __stdcall myWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCm
 /// 
 
 
-typedef void(__fastcall* Sub_40290F)(LPCRITICAL_SECTION lpCriticalSection);
-Sub_40290F originalUnknownFunc1 = nullptr;
-
-void __fastcall thunk_FUN_005cff80(LPCRITICAL_SECTION lpCriticalSection)
-{
-    OutputDebugStringA("DLL: thunk_FUN_005cff80()");
-    originalUnknownFunc1 = reinterpret_cast<Sub_40290F>(0x005cff80);
-    originalUnknownFunc1(lpCriticalSection);
-    return;
-}
-
-typedef int(__fastcall* Sub_401AAF)(int param1);
-Sub_401AAF originalUnknownFunc2 = nullptr;
-
-int __fastcall thunk_FUN_005d08e0(int param1)
-{
-    OutputDebugStringA("DLL: thunk_FUN_005d08e0()");
-    originalUnknownFunc2 = reinterpret_cast<Sub_401AAF>(0x005d08e0);
-    return originalUnknownFunc2(param1);
-}
-
-typedef int(__fastcall* Sub_404813)(LPCRITICAL_SECTION lpCriticalSection);
-Sub_404813 originalUnknownFunc3 = nullptr;
-
-int __fastcall local_sub_404813(LPCRITICAL_SECTION lpCriticalSection)
-{
-    OutputDebugStringA("DLL: local_sub_404813()");
-    originalUnknownFunc3 = reinterpret_cast<Sub_404813>(0x005D08F0);
-    return originalUnknownFunc3(lpCriticalSection);
-}
-
-typedef void(__fastcall* Sub_402757)(LPCRITICAL_SECTION lpCriticalSection);
-Sub_402757 originalUnknownFunc4 = nullptr;
-
-void __fastcall local_sub_402757(LPCRITICAL_SECTION lpCriticalSection)
-{
-    OutputDebugStringA("DLL: local_sub_402757()");
-    originalUnknownFunc4 = reinterpret_cast<Sub_402757>(0x005D0A80);
-    originalUnknownFunc4(lpCriticalSection);
-}
+//typedef void(__fastcall* Sub_40290F)(LPCRITICAL_SECTION lpCriticalSection);
+//Sub_40290F originalUnknownFunc1 = nullptr;
+//
+//void __fastcall thunk_FUN_005cff80(LPCRITICAL_SECTION lpCriticalSection)
+//{
+//    OutputDebugStringA("DLL: thunk_FUN_005cff80()");
+//    originalUnknownFunc1 = reinterpret_cast<Sub_40290F>(0x005cff80);
+//    originalUnknownFunc1(lpCriticalSection);
+//    return;
+//}
+//
+//typedef int(__fastcall* Sub_401AAF)(int param1);
+//Sub_401AAF originalUnknownFunc2 = nullptr;
+//
+//int __fastcall thunk_FUN_005d08e0(int param1)
+//{
+//    OutputDebugStringA("DLL: thunk_FUN_005d08e0()");
+//    originalUnknownFunc2 = reinterpret_cast<Sub_401AAF>(0x005d08e0);
+//    return originalUnknownFunc2(param1);
+//}
+//
+//typedef int(__fastcall* Sub_404813)(LPCRITICAL_SECTION lpCriticalSection);
+//Sub_404813 originalUnknownFunc3 = nullptr;
+//
+//int __fastcall local_sub_404813(LPCRITICAL_SECTION lpCriticalSection)
+//{
+//    OutputDebugStringA("DLL: local_sub_404813()");
+//    originalUnknownFunc3 = reinterpret_cast<Sub_404813>(0x005D08F0);
+//    return originalUnknownFunc3(lpCriticalSection);
+//}
+//
+//typedef void(__fastcall* Sub_402757)(LPCRITICAL_SECTION lpCriticalSection);
+//Sub_402757 originalUnknownFunc4 = nullptr;
+//
+//void __fastcall local_sub_402757(LPCRITICAL_SECTION lpCriticalSection)
+//{
+//    OutputDebugStringA("DLL: local_sub_402757()");
+//    originalUnknownFunc4 = reinterpret_cast<Sub_402757>(0x005D0A80);
+//    originalUnknownFunc4(lpCriticalSection);
+//}
 
 // Helper method
 template<typename ReturnType, typename ThisType, typename... Arguments>
@@ -317,91 +317,91 @@ __forceinline ReturnType Call_Method(const uintptr_t address, ThisType* const se
     return reinterpret_cast<ReturnType(__thiscall*)(ThisType*, Arguments...)>(address)(self, args...);
 }
 
-class Unk7C0004 {
-private:
-    CRITICAL_SECTION section;
-    uint8_t pad[0x4];
-    LPDIRECTDRAW  var_1C;
-    uint8_t pad[0x440 - 0x20];
-public:
-    void sub_5CFF80();
-    int sub_5D08E0();
-    LPDIRECTDRAW getUnk1C() { return var_1C; } // 0x005D08E0
-};
-
-class Unk7C0010 {
-    uint8_t pad[0x11D4 - 0x0];
-    uint16_t var_11D4; // 0x11D4
-    uint8_t var_11D6;  // 0x11D6
-    uint8_t pad[0x1BDC - 0x11D6];
-public:
-    void drawMenuItems3(HWND param_1, char param_2) { // sub_634B20
-        OutputDebugStringA("DLL: drawMenuItems3() START");
-        //Call_Method<void, Unk7C0010, HWND, char>(0x00634B20, this, param_1, param_2);
-
-        //int v3; // eax
-        LPDIRECTDRAW v3;
-
-        Unk7C0010* v4; // ecx
-        void* v5; // eax
-        void* v6; // edi
-        int v7; // eax
-        int v8; // esi
-        void* v9; // eax
-        void* v10; // ebx
-        int v11; // eax
-        void* v12; // eax
-        void* v13; // esi
-        int v14; // eax
-        int v15; // edi
-        signed int v16; // ebx
-        int v17; // esi
-        char v18; // al
-        int result; // eax
-        //int v49; // [esp+Ch] [ebp-94h]
-        DDSURFACEDESC v49{};
-        int v50; // [esp+10h] [ebp-90h]
-        int v52; // [esp+54h] [ebp-4Ch]
-        int v53; // [esp+58h] [ebp-48h]
-        int v54; // [esp+60h] [ebp-40h]
-        void* v55; // [esp+74h] [ebp-2Ch]
-        char v56; // [esp+78h] [ebp-28h]
-        void* v57; // [esp+8Ch] [ebp-14h]
-        Unk7C0010* v58; // [esp+90h] [ebp-10h]
-        int v59; // [esp+9Ch] [ebp-4h]
-        v58 = this;
-      
-        v4 = v58 = this;
-        Unk7C0004* lpCriticalSection = reinterpret_cast<Unk7C0004*>(0x007c0004);
-        lpCriticalSection->sub_5CFF80();
-        v3 = lpCriticalSection->getUnk1C();  // CRASHES HERE
-        this->var_11D4 = 0; // v58[2282] = 0; // ERROR!
-        this->var_11D6 = 0; // ?? 16 ?
-
-        //v49.size = 108;
-        //v49.flags = DDSD_PIXELFORMAT; // look this up
-        //v49.ddckCKSrcOverlay = 32;
-        //v49.ddckCKSrcBlt = 80;
-        //v49.ddsCaps = DDSCAPS_COMPLEX;
-        DDSURFACEDESC v49{ 108,4096, 32, 80, 8 };
-
-        // IDirectDraw_EnumDisplayModes(v3,0 /*Flags*/, lpDDSurfaceDesc /* localVar */, lpContext /* this */, lpEnumModesCallback /* 0x00401492 */)
-        // IDirectDraw_EnumDisplayModes(v3, 0, &v49 /* lpDDSurfaceDesc */, this, 0x00401492);
-        (*(void(__stdcall**)(int, DWORD, int*))(*(DWORD*)v3 + 32))(v3, 0, &v49);
-
-        local_sub_404813(lpCriticalSection);
-        local_sub_402757(lpCriticalSection);
-
-        //this->drawBackground(param_1, (char*)"Graphics\\Menu\\Main Menu.bmp", 1);
-        OutputDebugStringA("DLL: drawMenuItems3() END");
-    }
-
-    void drawBackground(HWND param_2, char* param_3, int param_4) {
-        OutputDebugStringA("DLL: drawBackground() START");
-        Call_Method<void, Unk7C0010, HWND, char*, int>(0x006352F0, this, param_2, param_3, param_4);
-        OutputDebugStringA("DLL: drawBackground() END");
-    }
-};
+//class Unk7C0004 {
+//private:
+//    CRITICAL_SECTION section;
+//    uint8_t pad[0x4];
+//    LPDIRECTDRAW  var_1C;
+//    uint8_t pad[0x440 - 0x20];
+//public:
+//    void sub_5CFF80();
+//    int sub_5D08E0();
+//    LPDIRECTDRAW getUnk1C() { return var_1C; } // 0x005D08E0
+//};
+//
+//class Unk7C0010 {
+//    uint8_t pad[0x11D4 - 0x0];
+//    uint16_t var_11D4; // 0x11D4
+//    uint8_t var_11D6;  // 0x11D6
+//    uint8_t pad[0x1BDC - 0x11D6];
+//public:
+//    void drawMenuItems3(HWND param_1, char param_2) { // sub_634B20
+//        OutputDebugStringA("DLL: drawMenuItems3() START");
+//        //Call_Method<void, Unk7C0010, HWND, char>(0x00634B20, this, param_1, param_2);
+//
+//        //int v3; // eax
+//        LPDIRECTDRAW v3;
+//
+//        Unk7C0010* v4; // ecx
+//        void* v5; // eax
+//        void* v6; // edi
+//        int v7; // eax
+//        int v8; // esi
+//        void* v9; // eax
+//        void* v10; // ebx
+//        int v11; // eax
+//        void* v12; // eax
+//        void* v13; // esi
+//        int v14; // eax
+//        int v15; // edi
+//        signed int v16; // ebx
+//        int v17; // esi
+//        char v18; // al
+//        int result; // eax
+//        //int v49; // [esp+Ch] [ebp-94h]
+//        DDSURFACEDESC v49{};
+//        int v50; // [esp+10h] [ebp-90h]
+//        int v52; // [esp+54h] [ebp-4Ch]
+//        int v53; // [esp+58h] [ebp-48h]
+//        int v54; // [esp+60h] [ebp-40h]
+//        void* v55; // [esp+74h] [ebp-2Ch]
+//        char v56; // [esp+78h] [ebp-28h]
+//        void* v57; // [esp+8Ch] [ebp-14h]
+//        Unk7C0010* v58; // [esp+90h] [ebp-10h]
+//        int v59; // [esp+9Ch] [ebp-4h]
+//        v58 = this;
+//      
+//        v4 = v58 = this;
+//        Unk7C0004* lpCriticalSection = reinterpret_cast<Unk7C0004*>(0x007c0004);
+//        lpCriticalSection->sub_5CFF80();
+//        v3 = lpCriticalSection->getUnk1C();  // CRASHES HERE
+//        this->var_11D4 = 0; // v58[2282] = 0; // ERROR!
+//        this->var_11D6 = 0; // ?? 16 ?
+//
+//        //v49.size = 108;
+//        //v49.flags = DDSD_PIXELFORMAT; // look this up
+//        //v49.ddckCKSrcOverlay = 32;
+//        //v49.ddckCKSrcBlt = 80;
+//        //v49.ddsCaps = DDSCAPS_COMPLEX;
+//        DDSURFACEDESC v49{ 108,4096, 32, 80, 8 };
+//
+//        // IDirectDraw_EnumDisplayModes(v3,0 /*Flags*/, lpDDSurfaceDesc /* localVar */, lpContext /* this */, lpEnumModesCallback /* 0x00401492 */)
+//        // IDirectDraw_EnumDisplayModes(v3, 0, &v49 /* lpDDSurfaceDesc */, this, 0x00401492);
+//        (*(void(__stdcall**)(int, DWORD, int*))(*(DWORD*)v3 + 32))(v3, 0, &v49);
+//
+//        local_sub_404813(lpCriticalSection);
+//        local_sub_402757(lpCriticalSection);
+//
+//        //this->drawBackground(param_1, (char*)"Graphics\\Menu\\Main Menu.bmp", 1);
+//        OutputDebugStringA("DLL: drawMenuItems3() END");
+//    }
+//
+//    void drawBackground(HWND param_2, char* param_3, int param_4) {
+//        OutputDebugStringA("DLL: drawBackground() START");
+//        Call_Method<void, Unk7C0010, HWND, char*, int>(0x006352F0, this, param_2, param_3, param_4);
+//        OutputDebugStringA("DLL: drawBackground() END");
+//    }
+//};
 
 template<typename T> void Hook_Method(uintptr_t in, T out)
 {
